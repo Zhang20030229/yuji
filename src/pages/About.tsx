@@ -15,8 +15,9 @@ export default function AboutPage() {
           我们的初心
         </h2>
         <p className="text-yuji-600 leading-relaxed">
-          有这样一群人——他们从小镇出发，靠着应试教育一路突围，
-          挤进了大城市的名校和名企。他们是旁人眼中的"学霸"、"别人家的孩子"。
+          有这样一群人——他们或许从小镇出发，或许在大城市成长，都经历过一段迷茫与探索的时期。
+          择业、定居、婚恋、人生意义……太多问题没有标准答案，太多声音在拉扯。
+          他们是旁人眼中的"优秀者"，但只有自己知道，内心总有一种"不确定"的声音。
         </p>
         <p className="text-yuji-600 leading-relaxed mt-3">
           但只有他们自己知道，内心深处总有一种"不够好"的声音。
@@ -73,7 +74,7 @@ export default function AboutPage() {
               <h3 className="font-medium text-teal-800 mb-1">同频封闭社区</h3>
               <p className="text-sm text-teal-600 leading-relaxed">
                 你不是性格有问题，你只是身边同类人太少。
-                在这个封闭社区里，你不用解释什么是"小镇做题家"的自卑，不用怕被评判。
+                在这个封闭社区里，你不用解释什么是"奥德赛时期"的不安，不用怕被评判。
                 你的脆弱，有人懂。
               </p>
             </div>

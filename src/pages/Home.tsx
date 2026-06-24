@@ -50,7 +50,7 @@ export default function Home() {
       <section className="text-center py-8">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-yuji-100 text-yuji-700 rounded-full text-sm mb-4">
           <Sparkles size={16} />
-          <span>小镇做题家的自我觉察工具</span>
+          <span>奥德赛时期的自我觉察工具</span>
         </div>
         <h1 className="text-3xl md:text-4xl font-bold text-yuji-800 mb-3">
           遇见真实的自己
