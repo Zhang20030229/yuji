@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Plus, Calendar, BarChart3, Trash2 } from 'lucide-react'
+import { Plus, Calendar, BarChart3, Trash2, Cloud, CloudOff, RefreshCw } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 import { moodDB } from '@/db'
 import type { MoodRecord, MoodLevel } from '@/types'
 import { MOOD_LABELS, CATEGORIES } from '@/types'
+import { isLoggedIn, syncMoodRecords, getCurrentUserId, getSyncStatus } from '@/supabase/sync'
 
 export default function MoodPage() {
   const [showForm, setShowForm] = useState(false)
@@ -12,10 +13,23 @@ export default function MoodPage() {
   const [selectedCategory, setSelectedCategory] = useState(CATEGORIES[0].id)
   const [eventText, setEventText] = useState('')
   const [noteText, setNoteText] = useState('')
+  const [isLogged, setIsLogged] = useState(false)
+  const [syncing, setSyncing] = useState(false)
+  const [lastSync, setLastSync] = useState<Date | null>(null)
 
   useEffect(() => {
     loadRecords()
+    checkLoginStatus()
   }, [])
+
+  async function checkLoginStatus() {
+    const logged = await isLoggedIn()
+    setIsLogged(logged)
+    if (logged) {
+      const status = getSyncStatus()
+      setLastSync(status.lastSyncTime)
+    }
+  }
 
   async function loadRecords() {
     const data = await moodDB.getAll()
@@ -34,10 +48,22 @@ export default function MoodPage() {
       category: selectedCategory,
       note: noteText.trim() || undefined,
       createdAt: now.getTime(),
+      local_only: !isLogged,
     }
 
     await moodDB.add(record)
     await loadRecords()
+
+    // 如果已登录，自动同步到云端
+    if (isLogged) {
+      const userId = await getCurrentUserId()
+      if (userId) {
+        setSyncing(true)
+        await syncMoodRecords(userId)
+        setSyncing(false)
+        setLastSync(new Date())
+      }
+    }
 
     setEventText('')
     setNoteText('')
@@ -50,6 +76,18 @@ export default function MoodPage() {
       await moodDB.delete(id)
       await loadRecords()
     }
+  }
+
+  async function handleManualSync() {
+    if (!isLogged) return
+    const userId = await getCurrentUserId()
+    if (!userId) return
+
+    setSyncing(true)
+    await syncMoodRecords(userId)
+    setSyncing(false)
+    setLastSync(new Date())
+    await loadRecords()
   }
 
   const chartData = [...records]
@@ -86,14 +124,44 @@ export default function MoodPage() {
           <h1 className="text-2xl font-bold text-yuji-800">情绪记录</h1>
           <p className="text-sm text-yuji-500 mt-1">用客观数据，打破主观自我否定</p>
         </div>
-        <button
-          onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-yuji-500 text-white rounded-xl hover:bg-yuji-600 transition-colors shadow-md hover:shadow-lg"
-        >
-          <Plus size={18} />
-          <span>记录心情</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {isLogged && (
+            <button
+              onClick={handleManualSync}
+              disabled={syncing}
+              className="flex items-center gap-1.5 px-3 py-2 bg-emerald-50 text-emerald-600 rounded-xl hover:bg-emerald-100 transition-colors text-sm"
+              title={lastSync ? `上次同步: ${lastSync.toLocaleTimeString()}` : '点击同步到云端'}
+            >
+              <RefreshCw size={16} className={syncing ? 'animate-spin' : ''} />
+              <span className="hidden sm:inline">{syncing ? '同步中...' : '同步'}</span>
+            </button>
+          )}
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className="flex items-center gap-2 px-4 py-2 bg-yuji-500 text-white rounded-xl hover:bg-yuji-600 transition-colors shadow-md hover:shadow-lg"
+          >
+            <Plus size={18} />
+            <span>记录心情</span>
+          </button>
+        </div>
       </div>
+
+      {/* 同步状态提示 */}
+      {isLogged && (
+        <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-600 rounded-xl text-sm">
+          <Cloud size={16} />
+          <span>已开启云端同步，你的记录会安全保存</span>
+        </div>
+      )}
+      {!isLogged && records.length > 0 && (
+        <div className="flex items-center justify-between px-4 py-2 bg-amber-50 text-amber-600 rounded-xl text-sm">
+          <div className="flex items-center gap-2">
+            <CloudOff size={16} />
+            <span>数据仅保存在本地，登录后可开启云端同步</span>
+          </div>
+          <a href="/auth" className="underline hover:no-underline">去登录</a>
+        </div>
+      )}
 
       {showForm && (
         <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-5 border border-yuji-100 shadow-lg">

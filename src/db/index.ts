@@ -42,6 +42,15 @@ export const moodDB = {
       .sortBy('createdAt')
   },
 
+  async update(id: number, changes: Partial<MoodRecord>) {
+    return db.moodRecords.update(id, changes)
+  },
+
+  async getByDate(createdAt: string): Promise<MoodRecord | undefined> {
+    const all = await db.moodRecords.toArray()
+    return all.find(r => new Date(r.createdAt).toISOString().split('T')[0] === createdAt.split('T')[0])
+  },
+
   async delete(id: number) {
     return db.moodRecords.delete(id)
   },

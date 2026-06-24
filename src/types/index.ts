@@ -8,6 +8,9 @@ export interface MoodRecord {
   category: string
   note?: string
   createdAt: number
+  // 云端同步相关字段
+  synced_at?: string
+  local_only?: boolean
 }
 
 export interface DecisionSession {
@@ -17,6 +20,9 @@ export interface DecisionSession {
   optionB: string
   createdAt: number
   messages: DecisionMessage[]
+  // 云端同步相关字段
+  synced_at?: string
+  local_only?: boolean
 }
 
 export interface DecisionMessage {

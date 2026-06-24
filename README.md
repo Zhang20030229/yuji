@@ -1,6 +1,6 @@
 # 🌿 遇己
 
-> 小镇做题家的自我觉察工具 —— 遇见真实的自己
+> 奥德赛时期的自我觉察工具 —— 遇见真实的自己
 
 ## ✨ 产品简介
 
@@ -11,9 +11,10 @@
 
 ## 🎯 目标用户
 
-从小依靠应试教育完成阶层突围，县城/小镇原生家庭无资源托底，独自在大城市求学、打拼的青年。
-
-长期被「分数=价值」单一标准驯化，成年后自动延伸出一套自我审判体系，终身活在"不够好"的内耗里。
+正在经历人生迷茫期，探索自我、寻找方向的青年。
+- 择业、定居、婚恋、人生意义……太多问题没有标准答案
+- 长期被单一评价体系困住，活在"不够好"的内耗里
+- 想要更了解自己，建立不依附外界的自我价值体系
 
 ## 🏗️ 三层产品架构
 
@@ -23,7 +24,7 @@
 - 多维度情绪分类标签
 - 30天情绪趋势可视化
 - 分类情绪统计分析
-- 所有数据本地存储（IndexedDB）
+- 本地存储 + 可选云端同步
 
 ### 第二层：人生决策推演
 听见内心的五个声音。
@@ -41,14 +42,24 @@ AI不会给你标准答案，只会帮你看清自己内心的真实倾向。
 - 📖 **选择实录** — 真实人生，没有标准答案
 - ✨ **和解实验室** — 引导员带领的深度讨论
 
+### 第四层：年度觉察报告
+长线觉察，年度复盘。
+- 全年情绪数据统计
+- 高频情绪标签分析
+- 月度趋势对比
+- 个性化洞察建议
+
 ## 🛡️ 隐私优先
 
-- **本地存储**：所有情绪日记、对话记录都存储在你本地的设备中
-- **端侧AI**：支持WebLLM端侧推理，数据不上传云端
-- **开源透明**：代码完全开源，任何人都可以审查数据流向
+- **本地存储**：所有数据默认存在浏览器本地
+- **云端可选**：登录后可开启同步，数据跨设备无缝衔接
+- **端侧AI**：WebLLM端侧推理，AI对话不经过任何服务器
+- **开源透明**：代码完全开源，任何人都可以审查
 - **一键删除**：随时清除所有数据，不留痕迹
 
 ## 🚀 快速开始
+
+### 纯本地模式（无需配置）
 
 ```bash
 # 安装依赖
@@ -56,20 +67,41 @@ npm install
 
 # 启动开发服务器
 npm run dev
-
-# 构建生产版本
-npm run build
 ```
+
+### 云端同步模式（可选）
+
+1. **创建 Supabase 项目**
+   - 访问 https://supabase.com
+   - 创建新项目
+
+2. **配置数据库**
+   - 在 Supabase SQL Editor 中运行 `supabase/schema.sql`
+
+3. **配置环境变量**
+   ```bash
+   cp .env.example .env.local
+   # 编辑 .env.local，填入你的 Supabase URL 和 Anon Key
+   ```
+
+4. **启动**
+   ```bash
+   npm install
+   npm run dev
+   ```
 
 ## 🛠️ 技术栈
 
-- **前端框架**：React 18 + TypeScript + Vite
-- **样式方案**：TailwindCSS v4
-- **路由管理**：React Router v6
-- **本地数据库**：Dexie.js（IndexedDB 封装）
-- **图表展示**：Recharts
-- **图标库**：Lucide React
-- **端侧AI**：WebLLM（@mlc-ai/web-llm）
+| 类别 | 技术 |
+|------|------|
+| 前端框架 | React 18 + TypeScript + Vite |
+| 样式方案 | TailwindCSS v4 |
+| 路由管理 | React Router v6 |
+| 本地数据库 | Dexie.js（IndexedDB 封装） |
+| 云端数据库 | Supabase（可选） |
+| 图表展示 | Recharts |
+| 图标库 | Lucide React |
+| 端侧AI | WebLLM（@mlc-ai/web-llm） |
 
 ## 📁 项目结构
 
@@ -82,17 +114,26 @@ src/
 │   ├── Mood.tsx     # 情绪记录
 │   ├── Decision.tsx # 决策推演
 │   ├── Community.tsx# 同频社区
+│   ├── Report.tsx   # 年度报告
+│   ├── Auth.tsx     # 登录/注册
 │   └── About.tsx    # 关于
 ├── ai/              # AI 相关
 │   ├── prompts.ts   # 角色 Prompt
 │   └── webllm.ts    # WebLLM 封装
+├── supabase/        # 云端同步
+│   ├── client.ts    # Supabase 客户端
+│   └── sync.ts      # 数据同步服务
 ├── db/              # 数据库
-│   └── index.ts     # Dexie 封装
+│   ├── index.ts     # Dexie 封装
+│   └── cloudSync.ts # 云端同步
 ├── types/           # 类型定义
 │   └── index.ts
 ├── App.tsx
 ├── main.tsx
 └── index.css
+
+supabase/
+└── schema.sql       # 数据库 Schema
 ```
 
 ## 💡 设计理念
@@ -106,6 +147,6 @@ src/
 
 ---
 
-Made with 💚 for every 小镇做题家
+Made with 💚 for every 奥德赛时期的青年
 
 愿你遇见真实的自己
