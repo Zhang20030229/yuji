@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-yuji-50: #fdf8f6;
+  --color-yuji-100: #f9ebe4;
+  --color-yuji-200: #f3d5c8;
+  --color-yuji-300: #e9b8a3;
+  --color-yuji-400: #dd9477;
+  --color-yuji-500: #d17452;
+  --color-yuji-600: #c25e3d;
+  --color-yuji-700: #a24c32;
+  --color-yuji-800: #86402d;
+  --color-yuji-900: #6f3829;
+  --color-yuji-950: #3b1b12;
+
+  --color-warm-50: #fefce8;
+  --color-warm-100: #fef9c3;
+  --color-warm-200: #fef08a;
+  --color-warm-300: #fde047;
+  --color-warm-400: #facc15;
+  --color-warm-500: #eab308;
+
+  --color-sage-50: #f6f7f6;
+  --color-sage-100: #e3e7e3;
+  --color-sage-200: #c8d0c8;
+  --color-sage-300: #a3b1a3;
+  --color-sage-400: #7d8f7d;
+  --color-sage-500: #627262;
+  --color-sage-600: #4e5b4e;
+
+  --font-sans: "Inter", "Noto Sans SC", system-ui, sans-serif;
+
+  --radius: 0.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: linear-gradient(135deg, #fdf8f6 0%, #f9ebe4 100%);
+  min-height: 100vh;
+  color: #3b1b12;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e9b8a3;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #dd9477;
+}
