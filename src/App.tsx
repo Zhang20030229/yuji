@@ -7,6 +7,8 @@ import Community from '@/pages/Community'
 import About from '@/pages/About'
 import Auth from '@/pages/Auth'
 import Report from '@/pages/Report'
+import Schedule from '@/pages/Schedule'
+import Health from '@/pages/Health'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/mood" element={<Mood />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/health" element={<Health />} />
           <Route path="/decision" element={<Decision />} />
           <Route path="/community" element={<Community />} />
           <Route path="/report" element={<Report />} />

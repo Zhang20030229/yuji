@@ -12,15 +12,19 @@ import {
   CloudOff,
   FileText,
   User,
+  Calendar,
+  Activity,
 } from 'lucide-react'
 import { onAuthStateChange, isLoggedIn } from '@/supabase/sync'
 
 const navItems = [
   { path: '/', label: '首页', icon: Home },
   { path: '/mood', label: '情绪记录', icon: HeartPulse },
+  { path: '/schedule', label: '时间管理', icon: Calendar },
+  { path: '/health', label: '健康数据', icon: Activity },
   { path: '/decision', label: '决策推演', icon: Brain },
   { path: '/community', label: '同频社区', icon: Users },
-  { path: '/report', label: '年度报告', icon: FileText },
+  { path: '/report', label: '觉察报告', icon: FileText },
   { path: '/about', label: '关于', icon: Info },
 ]
 

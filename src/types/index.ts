@@ -103,3 +103,137 @@ export const CATEGORIES = [
   { id: 'self', label: '自我价值', icon: '💭' },
   { id: 'other', label: '其他', icon: '📝' },
 ]
+
+export type TaskCategory = 'focus' | 'study' | 'meeting' | 'life' | 'health' | 'admin'
+
+export interface Task {
+  id: string
+  title: string
+  date: string
+  startMinute: number
+  endMinute: number
+  category: TaskCategory
+  note?: string
+  done: boolean
+}
+
+export interface HeartRateRecord {
+  minute: number
+  value: number
+}
+
+export interface StressRecord {
+  minute: number
+  value: number
+}
+
+export interface StepsRecord {
+  minute: number
+  value: number
+}
+
+export interface Spo2Record {
+  minute: number
+  value: number
+}
+
+export interface ExerciseRecord {
+  startMinute: number
+  endMinute: number
+  type: string
+  calories?: number
+}
+
+export interface SleepData {
+  bedtime: number
+  wakeupTime: number
+  deepSleepMinutes: number
+  lightSleepMinutes: number
+  totalMinutes: number
+  quality: number
+}
+
+export interface DayHealthData {
+  heartRate?: HeartRateRecord[]
+  stress?: StressRecord[]
+  steps?: StepsRecord[]
+  spo2?: Spo2Record[]
+  exercise?: ExerciseRecord[]
+  sleep?: SleepData
+}
+
+export interface DailyReport {
+  date: string
+  content: string
+  taskSummary?: {
+    busyMinutes: number
+    freeMinutes: number
+    focusMinutes: number
+    taskCount: number
+    nextTask?: Task
+  }
+  healthSummary?: {
+    hasData: boolean
+    heartRate?: { avg: number; min: number; max: number; count: number }
+    stress?: { avg: number; min: number; max: number; count: number }
+    steps?: { total: number }
+    sleep?: { duration: number; quality: number }
+    exercise?: { totalMinutes: number; items: ExerciseRecord[] }
+  }
+  createdAt: number
+}
+
+export interface Settings {
+  key?: string
+  glmApiKey: string
+  glmModel: string
+  activeTab?: string
+}
+
+export const CATEGORY_META: Record<TaskCategory, { label: string; color: string; bgColor: string }> = {
+  focus: { label: '专注', color: 'text-blue-600', bgColor: 'bg-blue-50 border-blue-200' },
+  study: { label: '学习', color: 'text-purple-600', bgColor: 'bg-purple-50 border-purple-200' },
+  meeting: { label: '会议', color: 'text-orange-600', bgColor: 'bg-orange-50 border-orange-200' },
+  life: { label: '生活', color: 'text-green-600', bgColor: 'bg-green-50 border-green-200' },
+  health: { label: '健康', color: 'text-red-600', bgColor: 'bg-red-50 border-red-200' },
+  admin: { label: '行政', color: 'text-gray-600', bgColor: 'bg-gray-50 border-gray-200' },
+}
+
+export const HEALTH_METRIC_META: Record<keyof DayHealthData, { label: string; icon: string; unit: string }> = {
+  heartRate: { label: '心率', icon: '❤️', unit: 'bpm' },
+  stress: { label: '压力', icon: '🧠', unit: '' },
+  steps: { label: '步数', icon: '👟', unit: '步' },
+  spo2: { label: '血氧', icon: '💨', unit: '%' },
+  exercise: { label: '运动', icon: '🏃', unit: '分钟' },
+  sleep: { label: '睡眠', icon: '🌙', unit: '小时' },
+}
+
+export const GLM_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions'
+export const GLM_DEFAULT_MODEL = 'glm-4-flash'
+
+export interface InferedEmotion {
+  key: string
+  label: string
+  icon: string
+  description: string
+  confidence: number
+}
+
+export interface HealthCorrelation {
+  heartRate?: { avg: number; min: number; max: number; count: number; trend: 'rising' | 'falling' | 'stable' }
+  stress?: { avg: number; min: number; max: number; count: number; trend: 'rising' | 'falling' | 'stable' }
+  steps?: { avg: number; min: number; max: number; count: number }
+  spo2?: { avg: number; min: number; max: number; count: number }
+  exercise?: ExerciseRecord[]
+  sleepContext?: SleepData
+}
+
+export interface DailyHealthSummary {
+  hasData: boolean
+  heartRate?: { avg: number; min: number; max: number; count: number }
+  stress?: { avg: number; min: number; max: number; count: number }
+  steps?: { total: number }
+  spo2?: { avg: number; min: number; max: number; count: number }
+  exercise?: { totalMinutes: number; items: ExerciseRecord[] }
+  sleep?: { duration: number; quality: number }
+}
